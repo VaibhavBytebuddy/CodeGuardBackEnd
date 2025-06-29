@@ -4,6 +4,7 @@ import com.codeguard.backend.dto.LoginRequest;
 import com.codeguard.backend.dto.SignupRequest;
 import com.codeguard.backend.model.User;
 import com.codeguard.backend.repository.UserRepository;
+import com.codeguard.backend.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     public String signup(SignupRequest signupRequest)
     {
@@ -45,7 +47,8 @@ public class AuthService {
             boolean passwordMatches = passwordEncoder.matches(loginRequest.getPassword(), user.get().getPassword());
             if (passwordMatches)
             {
-                return "Login successfully";
+                String token=jwtUtil.generateToken(user.get().getEmail());
+                return "Bearer "+token;
             }else {
                 return "Invalid password";
             }
