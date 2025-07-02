@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 public class AuthController {
 
     private final AuthService  authService;
@@ -20,6 +20,7 @@ public class AuthController {
     public ResponseEntity<String> signup(@RequestBody SignupRequest signupRequest)
     {
         String result = authService.signup(signupRequest);
+        System.out.println("signup"+signupRequest);
         return ResponseEntity.ok(result);
     }
     @PostMapping("/login")
